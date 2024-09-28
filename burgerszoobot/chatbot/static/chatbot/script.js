@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const sendBtn = document.getElementById('send-btn');
+    const userInput = document.getElementById('user-input');
+    const chatLog = document.getElementById('chat-log');
+
     // Function to get the CSRF token from the cookie
     function getCookie(name) {
         let cookieValue = null;
@@ -17,10 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const csrftoken = getCookie('csrftoken');
 
-    const sendBtn = document.getElementById('send-btn');
-    const userInput = document.getElementById('user-input');
-    const chatLog = document.getElementById('chat-log');
-
     sendBtn.addEventListener('click', () => {
         const message = userInput.value;
 
@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            chatLog.innerHTML += `<p class="user-message"><strong>You:</strong> ${message}</p>`;
-            chatLog.innerHTML += `<p class="bot-message"><strong>Bot:</strong> ${data.response}</p>`;
+            chatLog.innerHTML += `<p class="user-message">${message}</p>`;
+            chatLog.innerHTML += `<p class="bot-message">${data.response}</p>`;
             userInput.value = '';
             chatLog.scrollTop = chatLog.scrollHeight;
         })
