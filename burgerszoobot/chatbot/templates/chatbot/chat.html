@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burgers' Zoo Chatbot</title>
+    <link rel="stylesheet" href="{% static 'chatbot/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Burgers' Zoo Chatbot!</h1>
+        <div class="chat-box" id="chat-container">
+            <div id="chat-log" class="chat-log"></div>
+            <div class="input-area">
+                <input type="text" id="user-input" placeholder="Type your message..." class="input-box">
+                <button id="send-btn" class="send-btn">Send</button>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'chatbot/script.js' %}"></script>
+</body>
+</html>
