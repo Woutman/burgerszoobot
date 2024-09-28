@@ -1,5 +1,4 @@
 import os
-import textwrap
 
 from dotenv import load_dotenv
 import openai
