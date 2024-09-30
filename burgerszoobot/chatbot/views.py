@@ -8,17 +8,26 @@ from chatbot.services.llm_instructions import INSTRUCTIONS_CHATBOT
 def chatbot_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         user_input = request.POST.get('message')
+        retrieval_method = request.POST.get('retrieval_method')
+        chat_history_enabled = request.POST.get('chat_history_enabled') == "true"
 
-        if 'chat_history' not in request.session:
-            instructions = INSTRUCTIONS_CHATBOT
-            request.session['chat_history'] = [{"role": "system", "content": instructions}]
+        if chat_history_enabled:
+            if 'chat_history' not in request.session:
+                request.session['chat_history'] = [{"role": "system", "content": INSTRUCTIONS_CHATBOT}]
 
-        request.session['chat_history'].append({"role": "user", "content": user_input})
+            request.session['chat_history'].append({"role": "user", "content": user_input})
+            chat_history = request.session['chat_history']
+        else:
+            chat_history = [
+                {"role": "system", "content": INSTRUCTIONS_CHATBOT},
+                {"role": "user", "content": user_input}
+            ]
 
-        response = handle_chatbot_interaction(request.session['chat_history'])
+        response = handle_chatbot_interaction(chat_history=chat_history, retrieval_method=retrieval_method)
         
-        request.session['chat_history'].append({"role": "assistant", "content": response})
-        request.session.modified = True
+        if chat_history_enabled:
+            request.session['chat_history'].append({"role": "assistant", "content": response})
+            request.session.modified = True
         
         return JsonResponse({'response': response})
     

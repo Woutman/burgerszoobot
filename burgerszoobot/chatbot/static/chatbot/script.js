@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     sendBtn.addEventListener('click', () => {
         const message = userInput.value;
+        const retrievalMethod = document.querySelector('input[name="retrieval-method"]:checked').value;
+        const chatHistoryEnabled = document.getElementById('enable-chat-history').checked;
 
         fetch('/chat/', {
             method: 'POST',
@@ -14,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'X-CSRFToken': csrfToken
             },
-            body: new URLSearchParams({message: message})
+            body: new URLSearchParams({message: message, retrieval_method: retrievalMethod, chat_history_enabled: chatHistoryEnabled})
         })
         .then(response => response.json())
         .then(data => {

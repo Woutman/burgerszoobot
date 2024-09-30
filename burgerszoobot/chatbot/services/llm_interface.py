@@ -9,12 +9,12 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 client = openai.OpenAI(api_key=OPENAI_API_KEY)
 
 
-def query_gpt(chat_history: list[dict[str, str]]) -> str:
+def query_gpt(messages: list[dict[str, str]], temperature: float = 0.7, top_p: float = 0.95) -> str:
     response = client.chat.completions.create(
-        messages=chat_history, 
+        messages=messages, 
         model="gpt-4o-2024-08-06",
-        temperature=0.7,
-        top_p=0.95
+        temperature=temperature,
+        top_p=top_p
     )
     
     print(response.usage)

@@ -101,3 +101,24 @@ h1 {
     justify-content: flex-end;
     height: 100%;
 }
+
+/* Retrieval options styling */
+.retrieval-options {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #005f73;
+    display: flex;
+    justify-content: center;
+}
+
+.retrieval-options label {
+    margin-right: 15px;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.retrieval-options input[type="radio"] {
+    margin-right: 5px;
+}
