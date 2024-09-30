@@ -1,15 +1,17 @@
 import json
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandParser
 from chatbot.services.retrieval import ingest_document
 
 
 class Command(BaseCommand):
     help = 'Ingest documents into persistent ChromaDB'
 
-    def add_arguments(self, parser):
+
+    def add_arguments(self, parser: CommandParser) -> None:
         parser.add_argument('file_path', type=str, help='Path to the JSON file containing documents')
 
-    def handle(self, *args, **options):
+
+    def handle(self, *args, **options) -> None:
         file_path = options['file_path']
 
         try:

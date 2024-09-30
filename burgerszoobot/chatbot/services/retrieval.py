@@ -6,7 +6,9 @@ import chromadb.utils.embedding_functions as embedding_functions
 from chromadb.api.types import Metadata
 from chromadb.db.base import UniqueConstraintError
 
-client = chromadb.PersistentClient(path=".")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+path_to_chromadb = os.path.join(BASE_DIR, 'chromadb')
+client = chromadb.PersistentClient(path=path_to_chromadb)
 
 load_dotenv("api_keys.env")
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
@@ -34,10 +36,9 @@ def delete_document(document_id: str) -> None:
     collection.delete(ids=[document_id])
 
 
-def retrieve_documents(query_texts: list[str], n_results: int) -> tuple[list[str], list[Metadata]]:
+def retrieve_documents(query_texts: list[str], n_results: int) -> list[str]:
     results = collection.query(query_texts=query_texts, n_results=n_results)
 
-    documents = [result['documents'] for result in results['results']]
-    metadatas = [result['metadatas'] for result in results['results']]
+    documents = results['documents'][0]
 
-    return documents, metadatas
+    return documents
