@@ -9,6 +9,7 @@ from chromadb.db.base import UniqueConstraintError
 from .llm_instructions import INSTRUCTIONS_RETRIEVAL_WITH_EXAMPLE_ANSWER, INSTRUCTIONS_RETRIEVAL_WITH_SUBQUESTIONS
 from .llm_interface import query_gpt
 
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 path_to_chromadb = os.path.join(BASE_DIR, 'chromadb')
 client = chromadb.PersistentClient(path=path_to_chromadb)
