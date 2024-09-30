@@ -18,11 +18,16 @@
                 <input type="text" id="user-input" placeholder="Type your message..." class="input-box">
                 <button id="send-btn" class="send-btn">Verstuur</button>
             </div>
-            <div class="retrieval-options"></div>
-                <label><input type="radio" name="retrieval-method" value="basic" checked> Basic</label>
-                <label><input type="radio" name="retrieval-method" value="augmented_query"> Augmented query</label>
-                <label><input type="radio" name="retrieval-method" value="keyword"> Keyword Search</label>
-                <label><input type="checkbox" id="enable-chat-history">Enable chat history</label>
+            <div class="options-container">
+                <div class="retrieval-options">
+                    <label>Retrieval method:</label>
+                    <label><input type="radio" name="retrieval-method" value="basic" checked> Basic</label>
+                    <label><input type="radio" name="retrieval-method" value="augmented_query"> Query with example answer</label>
+                    <label><input type="radio" name="retrieval-method" value="subqueries"> Query with subqueries</label>
+                </div>
+                <div class="chat-history-option">
+                    <label><input type="checkbox" id="enable-chat-history"> Enable chat history</label>
+                </div>
             </div>
         </div>
     </div>

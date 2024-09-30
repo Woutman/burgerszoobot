@@ -4,23 +4,30 @@ body {
     background-color: #f2f7fa;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .container {
     max-width: 600px;
-    margin: 50px auto;
+    width: 100%;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 90%;
+    overflow: hidden;
 }
 
 h1 {
     font-family: 'Trebuchet MS', sans-serif;
     color: #005f73;
     font-size: 24px;
-    margin-bottom: 20px;
+    text-align: center;
+    margin: 20px 0;
 }
 
 /* Chat box styling */
@@ -29,15 +36,19 @@ h1 {
     border: 2px solid #89c2d9;
     border-radius: 10px;
     padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
     overflow: hidden;
-    min-height: 300px;
-    overflow-y: auto;
+    margin-bottom: 10px;
 }
 
 .chat-log {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    flex-grow: 1;
+    overflow-y: auto;
 }
 
 .user-message, .bot-message {
@@ -63,11 +74,11 @@ h1 {
     border: 2px solid #90e0ef;
 }
 
-/* Input area styling */
+/* Input area styling at the bottom */
 .input-area {
-    margin-top: 20px;
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
 }
 
 .input-box {
@@ -94,31 +105,47 @@ h1 {
     background-color: #0096c7;
 }
 
-/* Scroll to the bottom of chat */
-#chat-container {
+/* Retrieval options and chat history */
+.options-container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    height: 100%;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 10px;
+    padding-left: 10px;
 }
 
-/* Retrieval options styling */
 .retrieval-options {
-    margin-top: 20px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
     font-size: 14px;
     color: #005f73;
-    display: flex;
-    justify-content: center;
 }
 
 .retrieval-options label {
-    margin-right: 15px;
-    display: inline-flex;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.retrieval-options input[type="radio"] {
+    margin-right: 5px;
+}
+
+.chat-history-option {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #005f73;
+}
+
+.chat-history-option label {
+    display: flex;
     align-items: center;
     cursor: pointer;
 }
 
-.retrieval-options input[type="radio"] {
+.chat-history-option input[type="checkbox"] {
     margin-right: 5px;
 }

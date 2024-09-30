@@ -8,8 +8,10 @@ from chatbot.services.llm_instructions import INSTRUCTIONS_CHATBOT
 def chatbot_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         user_input = request.POST.get('message')
-        retrieval_method = request.POST.get('retrieval_method')
         chat_history_enabled = request.POST.get('chat_history_enabled') == "true"
+        retrieval_method = request.POST.get('retrieval_method')
+        if not retrieval_method:
+            raise ValueError("No retrieval method found in POST request.")
 
         if chat_history_enabled:
             if 'chat_history' not in request.session:
