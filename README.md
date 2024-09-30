@@ -101,11 +101,8 @@ burgerszoobot/
 └── README.md                  # Project documentation
 ```
 
-## Configuration
-- **OpenAI API Key**: Add your API key to `.env` for generating embeddings and responses.
-
 ## Documents
-A JSON with a list of all documents that have been ingested can be found at `util/docs.json`.
+A JSON file with a list of all documents that have been ingested can be found at `util/docs.json`.
 
 ## License
 
