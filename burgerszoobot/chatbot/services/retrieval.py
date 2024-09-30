@@ -51,7 +51,7 @@ def retrieve_documents(query_text: str, n_results: int, max_distance: float) -> 
     documents = documents[0]
     distances = distances[0]
 
-    relevant_documents = _filter_relevant_documents(documents=documents, distances=distances, max_distance=max_distance)
+    relevant_documents = _filter_documents_by_distance(documents=documents, distances=distances, max_distance=max_distance)
 
     return relevant_documents
 
@@ -70,7 +70,7 @@ def retrieve_documents_with_example_answer(query_text: str, n_results: int, max_
     documents = documents[0]
     distances = distances[0]
 
-    relevant_documents = _filter_relevant_documents(documents=documents, distances=distances, max_distance=max_distance)
+    relevant_documents = _filter_documents_by_distance(documents=documents, distances=distances, max_distance=max_distance)
 
     return relevant_documents
 
@@ -104,7 +104,7 @@ def retrieve_documents_with_subqueries(query_text: str, n_results: int, max_dist
 
     relevant_docs_all_queries = list()
     for documents_of_query, distances_of_query in zip(documents_of_all_queries, distances_of_all_queries):
-        relevant_docs_of_query = _filter_relevant_documents(documents=documents_of_query, distances=distances_of_query, max_distance=max_distance)
+        relevant_docs_of_query = _filter_documents_by_distance(documents=documents_of_query, distances=distances_of_query, max_distance=max_distance)
         relevant_docs_all_queries.extend(relevant_docs_of_query)
 
     return relevant_docs_all_queries
@@ -123,7 +123,7 @@ def _augment_query_with_subquestions(query_text: str) -> list[str]:
     return subqueries
 
 
-def _filter_relevant_documents(documents: list[str], distances: list[float], max_distance: float) -> list[str]:
+def _filter_documents_by_distance(documents: list[str], distances: list[float], max_distance: float) -> list[str]:
     indices_below_max_distance = [distances.index(distance) for distance in distances if distance <= max_distance]
     relevant_documents = [doc for doc in documents if documents.index(doc) in indices_below_max_distance]
 
