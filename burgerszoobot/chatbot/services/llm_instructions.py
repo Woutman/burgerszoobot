@@ -21,7 +21,7 @@ _INSTRUCTIONS_RETRIEVAL_WITH_SUBQUESTIONS = textwrap.dedent("""
 """)
 
 INSTRUCTIONS_RETRIEVAL_WITH_SUBQUESTIONS = textwrap.dedent("""
-    You are an LLM that's part of a RAG system. You will be given a question as input.
+    You are an LLM that's part of a RAG system that answers questions of visitors to Burgers' Zoo in Arnhem, The Netherlands. You will be given a question as input.
     Suggest up to five additional related questions to help find the information needed to answer the provided question.
     Suggest only short questions without compound sentences. Suggest a variety of questions that cover different aspects of the topic.
     Make sure each question answers a very specific topic, and that they are related to the original question.

@@ -43,7 +43,7 @@ The **Burgers' Zoo Chatbot** is a Django-based web application that helps visito
    ```
 
 4. **Set Up Environment Variables**
-   - Create a `.env` file in burgerszoobot/ and add the necessary environment variables:
+   - Create a `api_keys.env` file in burgerszoobot/ (same directory as manage.py) and add the necessary environment variables:
 
    ```env
    OPENAI_API_KEY='your_openai_api_key'
@@ -51,6 +51,7 @@ The **Burgers' Zoo Chatbot** is a Django-based web application that helps visito
 
 5. **Run Database Migrations**
    ```sh
+   cd burgerszoobot
    python manage.py migrate
    ```
 

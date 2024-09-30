@@ -4,6 +4,10 @@ from chatbot.services.retrieval import ingest_document
 
 
 class Command(BaseCommand):
+    '''
+    Class that adds ingest_docs command to manage.py.
+    IDs are assigned at ingestion and the count isn't persistent, so multiple ingestion attempts will lead to duplicate ID exceptions.
+    '''
     help = 'Ingest documents into persistent ChromaDB'
 
 
