@@ -32,6 +32,7 @@ except UniqueConstraintError:
 
 @dataclass
 class RAGSettings:
+    rag: bool
     classification: bool
     rephrasing: bool
     reranking: bool

@@ -5,13 +5,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    sendBtn.addEventListener('click', () => {
+    function sendMessage() {
         const message = userInput.value;
+
+        if (message === "") return;
+
+        const useRAG = document.getElementById('rag-checkbox').checked;
         const useClassification = document.getElementById('classification-checkbox').checked;
         const useRephrasing = document.getElementById('rephrasing-checkbox').checked;
         const useReranking = document.getElementById('reranking-checkbox').checked;
         const useRepacking = document.getElementById('repacking-checkbox').checked;
         const chatHistoryEnabled = document.getElementById('enable-chat-history').checked;
+
+        addMessage(message, 'user-message');
+        userInput.value = '';
 
         fetch('/chat/', {
             method: 'POST',
@@ -20,7 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 'X-CSRFToken': csrfToken
             },
             body: new URLSearchParams({
-                message: message, 
+                message: message,
+                use_rag: useRAG, 
                 use_classification: useClassification,
                 use_rephrasing: useRephrasing, 
                 use_reranking: useReranking, 
@@ -30,13 +38,33 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            chatLog.innerHTML += `<p class="user-message">${message}</p>`;
-            chatLog.innerHTML += `<p class="bot-message">${data.response}</p>`;
-            userInput.value = '';
-            chatLog.scrollTop = chatLog.scrollHeight;
+            addMessage(data.response, 'bot-message', true);
         })
         .catch((error) => {
             console.error('Error:', error);
         });
+    }
+
+    function addMessage(content, className, isHTML = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = className;
+    
+        if (isHTML) {
+            messageDiv.innerHTML = content; 
+        } else {
+            messageDiv.textContent = content;
+        }
+    
+        chatLog.appendChild(messageDiv);
+        chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+
+    userInput.addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent the default behavior (form submission)
+            sendMessage();
+        }
     });
 })

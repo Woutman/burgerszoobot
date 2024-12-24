@@ -11,6 +11,7 @@ def chatbot_view(request: HttpRequest) -> HttpResponse:
         user_input = request.POST.get('message')
         chat_history_enabled = request.POST.get('chat_history_enabled') == "true"
         rag_settings = RAGSettings(
+            rag=request.POST.get('use_rag') == "true",
             classification=request.POST.get('use_classification') == "true",
             rephrasing=request.POST.get('use_rephrasing') == "true",
             reranking=request.POST.get('use_reranking') == "true",
