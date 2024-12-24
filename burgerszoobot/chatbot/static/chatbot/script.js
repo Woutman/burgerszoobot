@@ -7,7 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     sendBtn.addEventListener('click', () => {
         const message = userInput.value;
-        const retrievalMethod = document.querySelector('input[name="retrieval-method"]:checked').value;
+        const useClassification = document.getElementById('classification-checkbox').checked;
+        const useRephrasing = document.getElementById('rephrasing-checkbox').checked;
+        const useReranking = document.getElementById('reranking-checkbox').checked;
+        const useRepacking = document.getElementById('repacking-checkbox').checked;
         const chatHistoryEnabled = document.getElementById('enable-chat-history').checked;
 
         fetch('/chat/', {
@@ -16,7 +19,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'X-CSRFToken': csrfToken
             },
-            body: new URLSearchParams({message: message, retrieval_method: retrievalMethod, chat_history_enabled: chatHistoryEnabled})
+            body: new URLSearchParams({
+                message: message, 
+                use_classification: useClassification,
+                use_rephrasing: useRephrasing, 
+                use_reranking: useReranking, 
+                use_repacking: useRepacking,  
+                chat_history_enabled: chatHistoryEnabled
+            })
         })
         .then(response => response.json())
         .then(data => {

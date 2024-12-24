@@ -20,10 +20,11 @@
             </div>
             <div class="options-container">
                 <div class="retrieval-options">
-                    <label>Retrieval method:</label>
-                    <label><input type="radio" name="retrieval-method" value="basic" checked> Basic</label>
-                    <label><input type="radio" name="retrieval-method" value="augmented_query"> Query with example answer</label>
-                    <label><input type="radio" name="retrieval-method" value="subqueries"> Query with subqueries</label>
+                    <label>RAG steps:</label>
+                    <label><input type="checkbox" id="classification-checkbox"> Enable query classification</label>
+                    <label><input type="checkbox" id="rephrasing-checkbox"> Enable query rephrasing</label>
+                    <label><input type="checkbox" id="reranking-checkbox"> Enable reranking</label>
+                    <label><input type="checkbox" id="repacking-checkbox"> Enable repacking</label>
                 </div>
                 <div class="chat-history-option">
                     <label><input type="checkbox" id="enable-chat-history"> Enable chat history</label>

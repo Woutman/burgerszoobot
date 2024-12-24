@@ -1,17 +1,21 @@
 from django.http import JsonResponse, HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from chatbot.services.chatbot_service import handle_chatbot_interaction 
-from chatbot.services.llm_instructions import INSTRUCTIONS_CHATBOT
+from .services.chatbot_service import handle_chatbot_interaction 
+from .services.llm_instructions import INSTRUCTIONS_CHATBOT
+from .services.rag import RAGSettings
 
 
 def chatbot_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         user_input = request.POST.get('message')
         chat_history_enabled = request.POST.get('chat_history_enabled') == "true"
-        retrieval_method = request.POST.get('retrieval_method')
-        if not retrieval_method:
-            raise ValueError("No retrieval method found in POST request.")
+        rag_settings = RAGSettings(
+            classification=request.POST.get('use_classification') == "true",
+            rephrasing=request.POST.get('use_rephrasing') == "true",
+            reranking=request.POST.get('use_reranking') == "true",
+            repacking=request.POST.get('use_repacking') == "true"
+        )
 
         if chat_history_enabled:
             if 'chat_history' not in request.session:
@@ -25,7 +29,7 @@ def chatbot_view(request: HttpRequest) -> HttpResponse:
                 {"role": "user", "content": user_input}
             ]
 
-        response = handle_chatbot_interaction(chat_history=chat_history, retrieval_method=retrieval_method)
+        response = handle_chatbot_interaction(chat_history=chat_history, rag_settings=rag_settings)
         
         if chat_history_enabled:
             request.session['chat_history'].append({"role": "assistant", "content": response})
