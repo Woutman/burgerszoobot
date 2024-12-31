@@ -11,9 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (message === "") return;
 
         const useRAG = document.getElementById('rag-checkbox').checked;
+        const retrievalTopN = document.getElementById('rag-top-n').value || 5;
         const useClassification = document.getElementById('classification-checkbox').checked;
         const useRephrasing = document.getElementById('rephrasing-checkbox').checked;
         const useReranking = document.getElementById('reranking-checkbox').checked;
+        const rerankingTopN = document.getElementById('reranking-top-n').value || 5;
         const useRepacking = document.getElementById('repacking-checkbox').checked;
         const chatHistoryEnabled = document.getElementById('enable-chat-history').checked;
 
@@ -29,9 +31,11 @@ document.addEventListener('DOMContentLoaded', function() {
             body: new URLSearchParams({
                 message: message,
                 use_rag: useRAG, 
+                retrieval_top_n: retrievalTopN,
                 use_classification: useClassification,
                 use_rephrasing: useRephrasing, 
                 use_reranking: useReranking, 
+                reranking_top_n: rerankingTopN,
                 use_repacking: useRepacking,  
                 chat_history_enabled: chatHistoryEnabled
             })
@@ -67,4 +71,4 @@ document.addEventListener('DOMContentLoaded', function() {
             sendMessage();
         }
     });
-})
+});

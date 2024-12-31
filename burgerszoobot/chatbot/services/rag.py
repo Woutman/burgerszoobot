@@ -33,9 +33,11 @@ except UniqueConstraintError:
 @dataclass
 class RAGSettings:
     rag: bool
+    retrieval_top_n: int
     classification: bool
     rephrasing: bool
     reranking: bool
+    reranking_top_n: int
     repacking: bool
 
 
@@ -44,19 +46,20 @@ class RAGPipeline:
         self.settings = settings
 
     def retrieve_relevant_info(self, message_history: list[dict[str, str]]) -> Optional[str]:
-        if self.settings.classification:
-            if not self._is_rag_necessary(message_history=message_history):
-                return
-        
         if self.settings.rephrasing:
             query = self._rephrase_query(message_history=message_history)
+            message_history[-1]['content'] = query
         else:    
             query = message_history[-1]['content']
 
-        results = self._retrieve_documents(query=query, top_n=20, min_score=0.6) # TODO: Include top_n and min_distance in settings
+        if self.settings.classification:
+            if not self._is_rag_necessary(message_history=message_history):
+                return
+
+        results = self._retrieve_documents(query=query, top_n=self.settings.retrieval_top_n, min_score=0.0) # TODO: Include min_distance in settings
 
         if self.settings.reranking:
-            results = self._rerank_documents(query=query, documents=results, top_n=5, min_score=0.0) # TODO: Include top_n in settings
+            results = self._rerank_documents(query=query, documents=results, top_n=self.settings.reranking_top_n, min_score=0.0) # TODO: Include top_n in settings
         
         if self.settings.repacking:
             results = self._reverse_documents(documents=results)
@@ -98,7 +101,7 @@ class RAGPipeline:
         documents = documents[0]
         distances = distances[0]
 
-        relevant_documents = self._filter_documents_by_distance(documents=documents, distances=distances, max_distance=min_score)
+        relevant_documents = self._filter_documents_by_distance(documents=documents, distances=distances, min_distance=min_score)
 
         return relevant_documents
 
@@ -143,8 +146,8 @@ class RAGPipeline:
 
         return result
 
-    def _filter_documents_by_distance(self, documents: list[str], distances: list[float], max_distance: float) -> list[str]:
-        indices_below_max_distance = [distances.index(distance) for distance in distances if distance <= max_distance]
-        relevant_documents = [doc for doc in documents if documents.index(doc) in indices_below_max_distance]
+    def _filter_documents_by_distance(self, documents: list[str], distances: list[float], min_distance: float) -> list[str]:
+        indices_above_min_distance = [distances.index(distance) for distance in distances if distance >= min_distance]
+        relevant_documents = [doc for doc in documents if documents.index(doc) in indices_above_min_distance]
 
         return relevant_documents

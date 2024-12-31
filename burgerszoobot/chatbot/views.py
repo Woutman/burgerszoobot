@@ -12,9 +12,11 @@ def chatbot_view(request: HttpRequest) -> HttpResponse:
         chat_history_enabled = request.POST.get('chat_history_enabled') == "true"
         rag_settings = RAGSettings(
             rag=request.POST.get('use_rag') == "true",
+            retrieval_top_n=int(request.POST.get('retrieval_top_n', '5')),
             classification=request.POST.get('use_classification') == "true",
             rephrasing=request.POST.get('use_rephrasing') == "true",
             reranking=request.POST.get('use_reranking') == "true",
+            reranking_top_n=int(request.POST.get('reranking_top_n', '5')),
             repacking=request.POST.get('use_repacking') == "true"
         )
 
@@ -38,4 +40,6 @@ def chatbot_view(request: HttpRequest) -> HttpResponse:
         
         return JsonResponse({'response': response})
     
+    if request.method == 'GET':
+        request.session.clear()
     return render(request, 'chatbot/chat.html')

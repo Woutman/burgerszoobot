@@ -20,14 +20,27 @@
             </div>
             <div class="options-container">
                 <div class="retrieval-options">
-                    <label><input type="checkbox" id="rag-checkbox"> Enable RAG</label>
-                    <label>RAG steps:</label>
+                    <label class="rag-container">
+                        <input type="checkbox" id="rag-checkbox"> Enable RAG
+                        <span class="top-n-wrapper">
+                            <span>top_n:</span>
+                            <input type="number" id="rag-top-n" class="top-n-input" min="1" placeholder="5">
+                        </span>
+                    </label>
+                    <h5>Optional RAG steps:</h5>
                     <label><input type="checkbox" id="classification-checkbox"> Enable query classification</label>
                     <label><input type="checkbox" id="rephrasing-checkbox"> Enable query rephrasing</label>
-                    <label><input type="checkbox" id="reranking-checkbox"> Enable reranking</label>
+                    <label class="reranking-container">
+                        <input type="checkbox" id="reranking-checkbox"> Enable reranking
+                        <span class="top-n-wrapper">
+                            <span>top_n:</span>
+                            <input type="number" id="reranking-top-n" class="top-n-input" min="1" placeholder="5">
+                        </span>
+                    </label>
                     <label><input type="checkbox" id="repacking-checkbox"> Enable repacking</label>
                 </div>
                 <div class="chat-history-option">
+                    <h5>Other settings:</h5>
                     <label><input type="checkbox" id="enable-chat-history"> Enable chat history</label>
                 </div>
             </div>
