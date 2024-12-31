@@ -13,11 +13,11 @@
 - [License](#license)
 
 ## Introduction
-The **Burgers' Zoo Chatbot** is a Django-based web application that helps visitors interactively find information about the zoo during their visit. The chatbot is enhanced with a Retrieval-Augmented Generation (RAG) system, utilizing different retrieval methods: **basic cosine similarity**, **retrievel with example answer**, and **retrieval with generated subqueries**. Users can also choose whether they want the chatbot to remember the conversation history.
+The **Burgers' Zoo Chatbot** is a Django-based web application that helps visitors interactively find information about the zoo during their visit. The chatbot is enhanced with a Retrieval-Augmented Generation (RAG) system, consisting of query classification, query rephrasing, document retrieval, retrieval reranking, and summarization. Users can enable or disable the optional steps of this system and also choose whether they want the chatbot to remember the conversation history for comparison of results.
 
 ## Features
 - **Interactive Chat UI** for providing zoo-related information.
-- **Multiple Retrieval Methods**: Users can choose between different IR methods for relevant responses.
+- **Customizable RAG pipeline**: Users can enable or disable different steps in the RAG pipeline.
 - **Enable Chat History**: Users can enable or disable conversation history.
 - **Customizable**: Easy to adapt to other use cases beyond zoo information.
 
@@ -63,9 +63,8 @@ The **Burgers' Zoo Chatbot** is a Django-based web application that helps visito
 ## Usage
 
 - Once the server is running, open a browser and navigate to `http://127.0.0.1:8000/chat/`.
-- Enter your question in the input field and click "Send".
-- Select different **retrieval methods** by choosing the radio buttons.
-- Enable or disable **chat history** using the provided checkbox.
+- Enter your question in the input field and press "Enter" or click "Verstuur".
+- Enable or disable **steps in the RAG pipeline** or **chat history**  using the provided checkbox.
 
 ## Project Structure
 
@@ -74,36 +73,35 @@ burgerszoobot/
 ├── burgerszoobot/
 │   ├── __init__.py
 │   ├── asgi.py 
-│   ├── settings.py           # Django settings
-│   ├── urls.py               # URL configuration
+│   ├── settings.py              # Django settings
+│   ├── urls.py                  # URL configuration
 │   └── wsgi.py
 ├── chatbot/
 │   ├── migrations/
 │   ├── templates/
 │   │   └── chatbot/
-│   │       └── chat.html      # Frontend HTML template
+│   │       └── chat.html        # Frontend HTML template
 │   ├── static/
 │   │   └── chatbot/
-│   │       └── styles.css     # Custom CSS styles
+│   │       ├── script.js        # Custom JavaScript scripts
+│   │       └── styles.css       # Custom CSS styles
 │   ├── management/
 │   │   └── commands/
-│   │       └── ingest_docs.py # Command to ingest documents
+│   │       └── ingest_docs.py   # Command to ingest documents
 │   ├── services/
 │   │   ├── chromadb/
-│   │   │   └── chroma.sqlite3 # Persistent ChromaDB database
-│   │   ├── chatbot_service.py # Main chatbot service logic
-│   │   ├── retrieval.py       # Logic for document retrieval
-│   │   └── llm_interface.py   # LLM interaction (e.g., OpenAI API)
-│   ├── views.py               # Handles user interactions
-│   ├── urls.py                # Chatbot app URL configuration
-│   └── models.py              # (Optional) Database models for chat history or document metadata
-├── manage.py                  # Django's command-line utility
-└── README.md                  # Project documentation
+│   │   │   └── chroma.sqlite3   # Persistent ChromaDB database
+│   │   ├── chatbot_service.py   # Main chatbot service logic
+│   │   ├── llm_instructions.py  # Instructions for LLM components
+│   │   ├── llm_interface.py     # LLM interaction (e.g., OpenAI API)
+│   │   └── rag.py               # RAG pipeline
+│   ├── views.py                 # Handles user interactions
+│   ├── urls.py                  # Chatbot app URL configuration
+│   ├── util.py                  # Utility functions
+│   └── models.py                # (Optional) Database models for chat history or document metadata
+├── manage.py                    # Django's command-line utility
+└── README.md                    # Project documentation
 ```
 
 ## Documents
 A JSON file with a list of all documents that have been ingested can be found at `util/docs.json`.
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for more details.

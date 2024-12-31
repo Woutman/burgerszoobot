@@ -66,10 +66,10 @@ class RAGPipeline:
             if not self._is_rag_necessary(message_history=message_history):
                 return
 
-        results = self._retrieve_documents(query=query, top_n=self.settings.retrieval_top_n, min_score=0.0) # TODO: Include min_distance in settings
+        results = self._retrieve_documents(query=query, top_n=self.settings.retrieval_top_n, min_score=0.0)
 
         if self.settings.reranking:
-            results = self._rerank_documents(query=query, documents=results, top_n=self.settings.reranking_top_n, min_score=0.0) # TODO: Include top_n in settings
+            results = self._rerank_documents(query=query, documents=results, top_n=self.settings.reranking_top_n, min_score=0.0)
         
         if self.settings.repacking:
             results = self._reverse_documents(documents=results)
