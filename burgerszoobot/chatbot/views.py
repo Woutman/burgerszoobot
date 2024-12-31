@@ -41,7 +41,6 @@ def chatbot_view(request: HttpRequest) -> HttpResponse:
         return JsonResponse({'response': response})
     
     if request.method == 'GET':
-        if request.session:
-            request.session.clear()
+        request.session.clear()
 
     return render(request, 'chatbot/chat.html')

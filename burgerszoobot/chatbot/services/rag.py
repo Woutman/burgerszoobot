@@ -8,7 +8,7 @@ import chromadb.utils.embedding_functions as embedding_functions
 from chromadb.db.base import UniqueConstraintError
 from chromadb.api.types import Metadata
 import torch
-from transformers import AutoModel, AutoTokenizer
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from dotenv import load_dotenv
 
 from .llm_instructions import INSTRUCTIONS_CLASSIFICATION, INSTRUCTIONS_REPHRASING, INSTRUCTIONS_SUMMARIZATION
@@ -118,28 +118,25 @@ class RAGPipeline:
     def _rerank_documents(self, query: str, documents: list[str], top_n: int, min_score: float) -> list[str]:
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-        tokenizer = AutoTokenizer.from_pretrained('ce-esci-MiniLM-L12-v2', model_type='flashrank')
-        model = AutoModel.from_pretrained('ce-esci-MiniLM-L12-v2', model_type='flashrank')
+        model_name_or_path = "Alibaba-NLP/gte-multilingual-reranker-base"
+
+        tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
+        model = AutoModelForSequenceClassification.from_pretrained(
+            model_name_or_path, trust_remote_code=True,
+            torch_dtype=torch.float16
+        )
         model.to(device)
         model.eval()
 
-        query_input = tokenizer(query, return_tensors='pt', padding=True, truncation=True, max_length=None)
-        query_input = {k: v.to(device) for k, v in query_input.items()}
-        
-        scores = []
-        for doc in documents:
-            doc_input = tokenizer(query, doc, return_tensors='pt', padding=True, truncation=True, max_length=None)
-            doc_input = {k: v.to(device) for k, v in doc_input.items()}
-            with torch.no_grad():
-                outputs = model(**doc_input)
-                score = outputs.logits
-                scores.append(score.item())
+        pairs = [[query, doc] for doc in documents]
+        with torch.no_grad():
+            inputs = tokenizer(pairs, padding=True, truncation=True, return_tensors='pt', max_length=512)
+            inputs = {key: value.to(device) for key, value in inputs.items()}
+            scores = model(**inputs, return_dict=True).logits.view(-1, ).float()
 
         ranked_documents = sorted(zip(documents, scores), key=lambda x: x[1], reverse=True)
-
-        # TODO: Function isn't finished
         
-        return [doc for doc, score in ranked_documents[:top_n]]
+        return [doc for doc, scores in ranked_documents[:top_n]]
     
     def _reverse_documents(self, documents: list[str]) -> list[str]:
         documents.reverse()
