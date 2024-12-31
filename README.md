@@ -6,11 +6,7 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
-- [Configuration](#configuration)
-- [Technologies Used](#technologies-used)
-- [Customization](#customization)
-- [Contributing](#contributing)
-- [License](#license)
+- [Documents](#documents)
 
 ## Introduction
 The **Burgers' Zoo Chatbot** is a Django-based web application that helps visitors interactively find information about the zoo during their visit. The chatbot is enhanced with a Retrieval-Augmented Generation (RAG) system, consisting of query classification, query rephrasing, document retrieval, retrieval reranking, and summarization. Users can enable or disable the optional steps of this system and also choose whether they want the chatbot to remember the conversation history for comparison of results.
