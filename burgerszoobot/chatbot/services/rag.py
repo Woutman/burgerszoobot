@@ -6,6 +6,7 @@ from typing import Optional
 import chromadb
 import chromadb.utils.embedding_functions as embedding_functions
 from chromadb.db.base import UniqueConstraintError
+from chromadb.api.types import Metadata
 import torch
 from transformers import AutoModel, AutoTokenizer
 from dotenv import load_dotenv
@@ -28,6 +29,15 @@ try:
     collection = client.create_collection(name="zoo_documents", embedding_function=openai_embedding_function)
 except UniqueConstraintError:
     collection = client.get_collection(name="zoo_documents", embedding_function=openai_embedding_function)
+
+
+def ingest_document(document_id: str, document_text: str, metadata: Metadata | None = None) -> None:
+    print(f"ingesting document {document_id}.")
+    collection.add(
+        ids=[document_id],
+        documents=[document_text],
+        metadatas=[metadata] if metadata else None
+    )
 
 
 @dataclass
