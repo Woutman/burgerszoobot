@@ -1,6 +1,6 @@
 import json
 from django.core.management.base import BaseCommand, CommandParser
-from chatbot.services.retrieval import ingest_document
+from chatbot.services.rag import ingest_document
 
 
 class Command(BaseCommand):
