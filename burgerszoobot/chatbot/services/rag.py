@@ -122,7 +122,9 @@ class RAGPipeline:
 
         tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
         model = AutoModelForSequenceClassification.from_pretrained(
-            model_name_or_path, trust_remote_code=True,
+            model_name_or_path,
+            revision="815b4a86b71f0ecba053e5814a6c24aa7199301e", 
+            trust_remote_code=True,
             torch_dtype=torch.float16
         )
         model.to(device)
