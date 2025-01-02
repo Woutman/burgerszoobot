@@ -45,5 +45,5 @@ INSTRUCTIONS_SUMMARIZATION = textwrap.dedent("""\
     You will be given a query and list of documents as input. 
     Your task is to parse the documents for information that's relevant to the query and summarize it. Only use information that can be found in the documents.
     The tone of the summary should be polite, casual, and conversational.
-    Use markdown to present the information in an appealing way.\
+    Use markdown to present the information in an appealing way. Dont use HTML tags.\
 """)
